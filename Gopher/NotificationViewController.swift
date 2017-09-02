@@ -193,16 +193,13 @@ class NotificationViewController: BaseViewController , UITableViewDataSource, UI
         }
         else
         {
-            //cell.ignoreBtn.isHidden = true
-            //cell.acceptBtn.isHidden = true
-            
             if(contractDetail.request.isEqual("0")) {
                 cell.requestLabel.text = fullName + "has not responded to your request"
                 
                 cell.termsBtn.isHidden=true
 
             }else if(contractDetail.request.isEqual("1")) {
-                cell.requestLabel.text = fullName + "has accept your request"
+                cell.requestLabel.text = fullName + " has accept your request"
                 
                 cell.termsBtn.tag=indexPath.row
                 
@@ -211,7 +208,7 @@ class NotificationViewController: BaseViewController , UITableViewDataSource, UI
                 cell.termsBtn.addTarget(self,action:#selector(completeThisOrder(sender:)), for: .touchUpInside)
 
             }else if(contractDetail.request.isEqual("2")) {
-                cell.requestLabel.text = fullName + "has not accept your request"
+                cell.requestLabel.text = fullName + " has not accept your request"
                 
                 cell.termsBtn.isHidden=true
  
@@ -707,13 +704,19 @@ class NotificationViewController: BaseViewController , UITableViewDataSource, UI
 
             }
             
-            if( !(gigInfo["image"] is NSNull))
-            {
-                gigDetails.gigImage =  String (Constants.PROFILEBASEURL) + String (gigInfo["image"] as! String)
+            
+            if let imageName = gigInfo["image"] as? String {
+            
                 
-                
-                
+                gigDetails.gigImage =  String (Constants.PROFILEBASEURL) + String (imageName)
             }
+//            if( !(gigInfo["image"] is NSNull))
+//            {
+//                gigDetails.gigImage =  String (Constants.PROFILEBASEURL) + String (gigInfo["image"] as! String)
+//                
+//                
+//                
+//            }
             
             if( !(userInfo["registration_date"] is NSNull))
             {

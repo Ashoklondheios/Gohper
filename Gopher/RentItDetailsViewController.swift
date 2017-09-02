@@ -92,7 +92,8 @@ class RentItDetailsViewController: UIViewController, UIScrollViewDelegate {
                     imagesScrollView.addSubview(detailedImageView)
                     detailedImageView.frame.size.width = self.view.bounds.size.width
                     detailedImageView.frame.origin.x = CGFloat(index) * self.view.bounds.size.width
-                    detailedImageView.clipsToBounds = true
+                    detailedImageView.mainImageView.clipsToBounds = true
+                    
                 }
             }
         }

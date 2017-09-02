@@ -39,13 +39,13 @@ class AddCardViewController: UIViewController {
         self.navigationController?.navigationBar.isHidden = true
     }
     @IBAction func backButton(_ sender: Any) {
-//        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-//        
-//        let nextViewController = storyBoard.instantiateViewController(withIdentifier: "rootController") as! RootViewController
-//        self.navigationController?.pushViewController(nextViewController, animated:true)
+        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
+        
+        let nextViewController = storyBoard.instantiateViewController(withIdentifier: "rootController") as! RootViewController
+        self.navigationController?.pushViewController(nextViewController, animated:true)
 //        navigationController?.popViewController(animated: true)
 //        
-        dismiss(animated: true, completion: nil)
+        //dismiss(animated: true, completion: nil)
     }
     @IBAction func cardDetailsBtn(_ sender: Any) {
         

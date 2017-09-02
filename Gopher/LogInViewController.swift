@@ -241,7 +241,6 @@ class LogInViewController: BaseViewController, TTTAttributedLabelDelegate, UITex
             {
                 requestOperation, response in
                 
-                self.showProgressLoader()
                 let result = NSString(data: (response as! NSData) as Data, encoding: String.Encoding.utf8.rawValue)!
                 
                 print(result)
@@ -276,7 +275,7 @@ class LogInViewController: BaseViewController, TTTAttributedLabelDelegate, UITex
         
         }
         
-        
+        self.showProgressLoader()
         let manager = AFHTTPSessionManager()
         manager.requestSerializer = AFJSONRequestSerializer()
         manager.responseSerializer = AFHTTPResponseSerializer()
@@ -284,7 +283,7 @@ class LogInViewController: BaseViewController, TTTAttributedLabelDelegate, UITex
             {
                 requestOperation, response in
                 
-                self.showProgressLoader()
+                
                 let result = NSString(data: (response as! NSData) as Data, encoding: String.Encoding.utf8.rawValue)!
                 
                 print(result)
@@ -326,7 +325,7 @@ class LogInViewController: BaseViewController, TTTAttributedLabelDelegate, UITex
             
         }
         
-        
+        self.showProgressLoader()
         let manager = AFHTTPSessionManager()
         manager.requestSerializer = AFJSONRequestSerializer()
         manager.responseSerializer = AFHTTPResponseSerializer()
@@ -334,7 +333,7 @@ class LogInViewController: BaseViewController, TTTAttributedLabelDelegate, UITex
             {
                 requestOperation, response in
                 
-                self.showProgressLoader()
+                
                 let result = NSString(data: (response as! NSData) as Data, encoding: String.Encoding.utf8.rawValue)!
                 
                 print(result)
@@ -350,6 +349,7 @@ class LogInViewController: BaseViewController, TTTAttributedLabelDelegate, UITex
     }
     
     fileprivate func parseSignUpResponse(_ response:String) {
+        self.hideProgressLoader()
         let dict = convertToDictionary(text: response)
         let code = dict?["code"] as! Int
         

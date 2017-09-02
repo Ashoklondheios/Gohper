@@ -151,6 +151,12 @@ class SellerMapViewController: BaseViewController,GMSMapViewDelegate, UITableVie
         super.viewDidLayoutSubviews()
     }
     
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+        // Dispose of any resources that can be recreated.
+    }
+
+    // MARK: Check location is enabled or not after coming from background to foreground.
     func appIsComingForeground(){
         
         if self.segmentedControl.selectedSegmentIndex == 0 {
@@ -170,6 +176,7 @@ class SellerMapViewController: BaseViewController,GMSMapViewDelegate, UITableVie
         
     }
 
+    // MARK: Filter gig post based on fiter paramters
     @IBAction func filterButtonAction(_ sender: UIButton) {
         
         if self.filterView.isHidden {
@@ -188,15 +195,15 @@ class SellerMapViewController: BaseViewController,GMSMapViewDelegate, UITableVie
             self.gigListTableView.bringSubview(toFront: filterView)
 
         }
-        
-        
-    }
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+
     }
     
+    // MARK: Rent button clicked...
     
+    @IBAction func rentButtonClicked(_ sender: Any) {
+        
+        self.selectRentIt(sender as! UIButton)
+    }
     
     @IBAction func selectRentIt(_ sender: UIButton) {
         
@@ -215,6 +222,7 @@ class SellerMapViewController: BaseViewController,GMSMapViewDelegate, UITableVie
         
     }
     
+    // MARK: Contact button clicked...
     @IBAction func selectContacts(_ sender: UIButton) {
         
         selected_row=sender.tag
@@ -227,32 +235,21 @@ class SellerMapViewController: BaseViewController,GMSMapViewDelegate, UITableVie
             
         }else{
             if Commons.connectedToNetwork() {
+                showProgressLoader()
                 self.GetAllConversationsAPICall(selectedGig)
             }
             else {
                 Commons.showAlert("Network Error", VC: self)
             }
         }
-        
-        
-        //        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        //        let viewController = storyboard.instantiateViewController(withIdentifier :"selectRentIt") as! RentDatesController
-        //
-        ////        let selectedGig = listOfGigs[indexPath.row] as! LatLongDetail
-        ////
-        ////        viewController.selectedGig = selectedGig
-        //
-        //        self.show(viewController, sender: self)
-        
-        //performSegue(withIdentifier: "selectRentIt", sender: self)
-        
-        
     }
     
     
     @IBAction func availibilityCalenderTapped(_ sender: Any) {
+        
     }
-    //MARK:- Tableview Methods
+    
+    //MARK:- Tableview  Delegate and datasource Methods
     func numberOfSections(in tableView: UITableView) -> Int {
       //  self.tableView = tableView
         return 1
@@ -263,10 +260,6 @@ class SellerMapViewController: BaseViewController,GMSMapViewDelegate, UITableVie
         return listOfGigs.count
     }
     
-    @IBAction func rentButtonClicked(_ sender: Any) {
-        
-        self.selectRentIt(sender as! UIButton)
-    }
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         
@@ -277,66 +270,34 @@ class SellerMapViewController: BaseViewController,GMSMapViewDelegate, UITableVie
         if(!(markerDetails.gigImage.isEqual("")))
         {
             cell.gigImage.sd_setImage(with:  URL(string: markerDetails.gigImage), placeholderImage: nil, options: .refreshCached)
-           // cell.gigImage.sd_setImage(with: URL(string: markerDetails.gigImage))
         }
         else
         {
-            cell.gigImage.image=UIImage(named: "placeholder.png")
-            //cell.gigImage.setBackgroundImage( UIImage(named: "placeholder.png"), for: .normal)
+            cell.gigImage.image = UIImage(named: "placeholder.png")
+            
         }
         
-        if(UserModel.getUserData().userId.isEqual(markerDetails.userId))
-        {
+        if(UserModel.getUserData().userId.isEqual(markerDetails.userId)){
             
             cell.rentButton.layer.borderColor = UIColor.lightGray.cgColor
             cell.contactButton.layer.borderColor = UIColor.lightGray.cgColor
-            
-            //cell.rentButton.isEnabled=false
-            //cell.contactButton.isEnabled=false
-            
-            //cell.rentButton.tintColor = UIColor.lightGray
-            //cell.contactButton.tintColor = UIColor.lightGray
-            
             cell.rentButton.setTitleColor(.lightGray, for: .normal)
             cell.contactButton.setTitleColor(.lightGray, for: .normal)
-            
-
-            
-        }else{
-            
-            
+  
+        } else {
             let rgbValue = 0x55A0BF
             let r = Float((rgbValue & 0xFF0000) >> 16)/255.0
             let g = Float((rgbValue & 0xFF00) >> 8)/255.0
             let b = Float((rgbValue & 0xFF))/255.0
-            
-            
             cell.rentButton.layer.borderColor = UIColor(red:CGFloat(r), green: CGFloat(g), blue: CGFloat(b), alpha: 1.0).cgColor
             cell.contactButton.layer.borderColor = UIColor(red:CGFloat(r), green: CGFloat(g), blue: CGFloat(b), alpha: 1.0).cgColor
             
-            //cell.rentButton.isEnabled=false
-            //cell.contactButton.isEnabled=false
-            
-            //cell.rentButton.tintColor = UIColor.lightGray
-            //cell.contactButton.tintColor = UIColor.lightGray
-            
             cell.rentButton.setTitleColor(UIColor(red:CGFloat(r), green: CGFloat(g), blue: CGFloat(b), alpha: 1.0), for: .normal)
             cell.contactButton.setTitleColor(UIColor(red:CGFloat(r), green: CGFloat(g), blue: CGFloat(b), alpha: 1.0), for: .normal)
-            
-        
-            
-        
         }
         
         cell.rentButton.tag=indexPath.row
         cell.contactButton.tag=indexPath.row
-        
-        // cell.gigProfileImg.sd_setImage(with: URL(string: markerDetails.profile_img), placeholderImage: UIImage(named: "placeholder.png"))
-        
-        //cell.gigProfileImg.tag = indexPath.row + 10
-        //cell.gigProfileImg.addTarget(self, action: #selector(buttonProfileTapped(_:)), for: .touchUpInside)
-        
-        
         
         if(markerDetails.type_of_payment.isEqual("1"))
         {
@@ -410,9 +371,6 @@ class SellerMapViewController: BaseViewController,GMSMapViewDelegate, UITableVie
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        //performSegue(withIdentifier: "rentItDetailsVC", sender: self)
-        
-        //selected_row=indexPath.row
         
         tableView.deselectRow(at: indexPath, animated: true)
         
@@ -426,8 +384,6 @@ class SellerMapViewController: BaseViewController,GMSMapViewDelegate, UITableVie
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "selectRentIt" {
-            
-            
             
             let selectedGig = listOfGigs[selected_row] as! LatLongDetail
 
@@ -457,28 +413,9 @@ class SellerMapViewController: BaseViewController,GMSMapViewDelegate, UITableVie
             //destinationVC.datesDelegate = self
         } else if segue.identifier == "availabilityCalenderVC" {
             let destinationVC = segue.destination as! AvailabilityCalenderViewController
-//            
-//            if editFlag {
-//                
-//                destinationVC.selectedDatesArray = editGigDetail.calenderList
-//                destinationVC.imageUrl = editGigDetail.gigImage
-//                destinationVC.gigTitle = editGigDetail.gigTitle
-//            }
-//            
             destinationVC.datesDelegate = self
         }
     }
-    
-    
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        if segue.identifier == "rentItDetailsVC" ,
-//            let nextScene = segue.destination as? RentItDetailsViewController ,
-//            let indexPath = self.tableView.indexPathForSelectedRow {
-//            let selectedGig = listOfGigs[indexPath.row] as! LatLongDetail
-//
-//            nextScene.selectedGig = selectedGig
-//        }
-//    }
     
 
     
@@ -491,73 +428,14 @@ class SellerMapViewController: BaseViewController,GMSMapViewDelegate, UITableVie
     
     func gigDetailViewTap(tapGestureRecognizer: UITapGestureRecognizer)
     {
-//        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-//        
-//        let nextViewController = storyBoard.instantiateViewController(withIdentifier: "publicProfileVC") as! PublicProfilePostsController
-//        nextViewController.profileId = markerDetails.userId
-//        nextViewController.profilePicUrl = markerDetails.profile_img
-//        //self.navigationController?.pushViewController(nextViewController, animated:true)
-//        self.present(nextViewController, animated: true, completion: nil)
-        
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let viewController = storyboard.instantiateViewController(withIdentifier :"showRentDetail") as! RentItDetailsViewController
-        
         viewController.selectedGig = markerDetails
-        
         self.present(viewController, animated: true, completion: nil)
-        
-        
-        
-        
-//        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-//        
-//        let nextViewController = storyBoard.instantiateViewController(withIdentifier: "sendContractDetailVC") as! PreviewSendContractDetailsViewController
-//        var categorieList = NSMutableArray()
-//        var descriptionFromPostVC = ""
-//        var categorieListFromPostVC = NSMutableArray()
-//        var locationFromPostVC = ""
-//        var deadLineFromPostVC = ""
-//        var paymentFromPostVC = ""
-//        var paymentTimeFromPostVC = ""
-//        var stateFromPostVC = ""
-//        var cityFromPostVC = ""
-//        var countryFromPostVC = ""
-//        var longitudeFromPostVC = ""
-//        var latFromPostVC = ""
-//        var location_stringFromPostVC = ""
-//        var paymentType = ""
-        
-//        nextViewController.descriptionFromPostVC = markerDetails.gig_description
-//        nextViewController.categorieListFromPostVC = markerDetails.categoryList
-//        nextViewController.locationFromPostVC = markerDetails.location_string
-//        nextViewController.deadLineFromPostVC = markerDetails.deadline
-//        nextViewController.paymentFromPostVC = markerDetails.pay
-//        nextViewController.paymentTimeFromPostVC = markerDetails.deadline
-//        nextViewController.stateFromPostVC = markerDetails.state
-//        nextViewController.cityFromPostVC = markerDetails.city
-//        nextViewController.countryFromPostVC = markerDetails.country
-//        nextViewController.longitudeFromPostVC = markerDetails.long
-//        nextViewController.latFromPostVC = markerDetails.lat
-//        nextViewController.location_stringFromPostVC = markerDetails.location_string
-//        nextViewController.paymentType = markerDetails.type_of_payment
-//        self.present(nextViewController, animated:true, completion:nil)
-        
-        // Your action
     }
     
     func buttonProfileTapped(_ sender : UIButton){
         let buttonRow = sender.tag - 10
-        
-//        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-//        
-//        let nextViewController = storyBoard.instantiateViewController(withIdentifier: "publicProfileVC") as! PublicProfilePostsController
-//        
-//        let markerDetails = listOfGigs[buttonRow] as! LatLongDetail
-//        
-//        nextViewController.profileId = markerDetails.userId
-//        nextViewController.profilePicUrl = markerDetails.profile_img
-//        //self.navigationController?.pushViewController(nextViewController, animated:true)
-//        self.present(nextViewController, animated: true, completion: nil)
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let viewController = storyboard.instantiateViewController(withIdentifier :"showRentDetail") as! RentItDetailsViewController
@@ -596,27 +474,16 @@ class SellerMapViewController: BaseViewController,GMSMapViewDelegate, UITableVie
     
     func imageTapped(tapGestureRecognizer: UITapGestureRecognizer)
     {
-//        let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-//        
-//        let nextViewController = storyBoard.instantiateViewController(withIdentifier: "publicProfileVC") as! PublicProfilePostsController
-//        nextViewController.profileId = markerDetails.userId
-//        nextViewController.profilePicUrl = markerDetails.profile_img
-//        //self.navigationController?.pushViewController(nextViewController, animated:true)
-//        
-//        self.present(nextViewController, animated: true, completion: nil)
         
         let storyboard = UIStoryboard(name: "Main", bundle: nil)
         let viewController = storyboard.instantiateViewController(withIdentifier :"showRentDetail") as! RentItDetailsViewController
-        
-        
-        
         viewController.selectedGig = markerDetails
-        
         self.present(viewController, animated: true, completion: nil)
         
         // Your action
     }
     @IBAction func contactBtn(_ sender: Any) {
+        
     }
     
     @IBAction func applyBtn(_ sender: Any) {
@@ -664,9 +531,6 @@ class SellerMapViewController: BaseViewController,GMSMapViewDelegate, UITableVie
         else {
             Commons.showAlert("Network Error", VC: self)
         }
-
-        
-        
     }
    
     
@@ -709,14 +573,11 @@ class SellerMapViewController: BaseViewController,GMSMapViewDelegate, UITableVie
         }
 
         
-        if(UserModel.getUserData().userId.isEqual(markerDetails.userId))
-        {
+        if(UserModel.getUserData().userId.isEqual(markerDetails.userId)) {
             gigBtnContact.isHidden = true
             rentBtn.isHidden = true
            // gigBtnSendContract.isHidden = true
-        }
-        else
-        {
+        } else {
             gigBtnContact.isHidden = false
             rentBtn.isHidden = false
 
@@ -738,18 +599,6 @@ class SellerMapViewController: BaseViewController,GMSMapViewDelegate, UITableVie
     deinit {
         mapView = nil
     }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
-    
-    
     
     //MARK:- initialization current location
     private func initialization() {
@@ -1042,23 +891,14 @@ fileprivate func getCurrentLocation() {
                     }
                     
                     
-                    if( !(itemDict["gigpost_calender_id"] is NSNull))
-                    {
+                    if( !(itemDict["gigpost_calender_id"] is NSNull)) {
                         let stringDate = Commons.changeGigDateFormat(dateFrom: itemDict["date"] as! String) as String
                         
                         calenderModel.calenderDate  = stringDate
-//                        
-//                        print(calenderModel.calenderId)
-//                        print(calenderModel.calenderDate)
-//                        print(itemDict["date"] ?? "No date")
                     }
-
                     gigDetails.calenderList.add(calenderModel as CalenderObject)
                    
                 }
-                
-                
-                
                 if( !(locationInfo["lat"] is NSNull))
                 {
                     if let lat = locationInfo["lat"] as? String {
@@ -1108,11 +948,8 @@ fileprivate func getCurrentLocation() {
                             gigDetails.gigImage = String (Constants.PROFILEBASEURL) + image
                         }
                         gigImageModel.gigpost_image_url  = String (Constants.PROFILEBASEURL) + image
-                        
                     }
-                    
                     gigDetails.gigImageList.add(gigImageModel as GigImageObject)
-                    
                 }
                 gigDetails.distance = String(distance)
                 listOfGigs.add(gigDetails)
@@ -1243,7 +1080,7 @@ fileprivate func getCurrentLocation() {
 //            
 //        }
 //    }
-    //MARK:- Get Notification Count Api Call
+    // MARK:- Get Notification Count Api Call
     func GetNotificationAPICall()
     {
         
@@ -1431,18 +1268,17 @@ extension SellerMapViewController: CLLocationManagerDelegate {
         let manager = AFHTTPSessionManager()
         manager.requestSerializer = AFJSONRequestSerializer()
         manager.responseSerializer = AFHTTPResponseSerializer()
-        manager.post(Constants.getConversationAPIURL, parameters: params, success:
-            {
+        manager.post(Constants.getConversationAPIURL, parameters: params, success: {
                 requestOperation, response in
                 
                 let result = NSString(data: (response as! NSData) as Data, encoding: String.Encoding.utf8.rawValue)!
                 
                 print(result)
+                self.hideProgressLoader()
                 self.parseConversationsResponse(result as String, markerDetail: markerDetail as LatLongDetail)
-        },
-                     failure:
-            {
+        }, failure: {
                 requestOperation, error in
+                self.hideProgressLoader()
                 print(error.localizedDescription)
         })
         

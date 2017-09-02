@@ -264,7 +264,7 @@ class V2Textfield: UITextField, UITextFieldDelegate, UIActionSheetDelegate, UIPi
         case .V2TextFieldStylePhoneNumber:
             self.textColor = UIColor.black
             self.backgroundColor = UIColor.white
-           // self.setAttributedText(defaultPlaceholder: textFieldDefaultPhoneText)
+           self.setAttributedText(defaultPlaceholder: textFieldDefaultPhoneText)
             self.keyboardType = .phonePad
             break
             

@@ -260,7 +260,9 @@ class AddCardDetailViewController: BaseViewController {
             let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
             
             let nextViewController = storyBoard.instantiateViewController(withIdentifier: "rootController") as! RootViewController
-            self.navigationController?.pushViewController(nextViewController, animated:true)
+            self.present(nextViewController, animated:false, completion:nil)
+
+           // self.navigationController?.pushViewController(nextViewController, animated:true)
         }
     }
     func convertToDictionary(text: String) -> [String: Any]? {

@@ -100,6 +100,7 @@ class MyProfilePosts: BaseViewController, UICollectionViewDelegate,UICollectionV
     
     
     // MARK: Life Cycle Methods
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -129,6 +130,8 @@ class MyProfilePosts: BaseViewController, UICollectionViewDelegate,UICollectionV
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    
     //MARK:- IBActions Methods
     
     @IBAction func seeAllReviews(_ sender: Any) {
@@ -141,13 +144,14 @@ class MyProfilePosts: BaseViewController, UICollectionViewDelegate,UICollectionV
         
         dismiss(animated: true, completion: nil)
     }
+    
     @IBAction func doneBtn(_ sender: Any) {
         _=navigationController?.popViewController(animated: true)
         
         dismiss(animated: true, completion: nil)
     }
     
-    
+    // MARK: Call the public profile API.
     func MakeAPICall()
     {
         showProgressLoader()
@@ -253,8 +257,10 @@ class MyProfilePosts: BaseViewController, UICollectionViewDelegate,UICollectionV
                         let dictObject=deactiveArray[i] as! NSDictionary
                         
                         var itemDict=[String:Any]()
+                        if let imageString = dictObject["image"] as? String {
+                            itemDict["image"]=String (Constants.PROFILEBASEURL) + imageString
+                        }
                         
-                        itemDict["image"]=String (Constants.PROFILEBASEURL) + String (dictObject["image"] as! String)
                         itemDict["title"]=dictObject["title"]
                         itemDict["gig_post_id"]=dictObject["gig_post_id"]
                         
@@ -389,12 +395,14 @@ class MyProfilePosts: BaseViewController, UICollectionViewDelegate,UICollectionV
         
         for i in 0..<ActivePosts.count{
             
-            let item=ActivePosts[i] as [String:Any]
+            let item = ActivePosts[i] as [String:Any]
+ 
             var postImage = ""
+            
+            // Check for null and nil - By Ashok
             if let postImage1 = item["image"] as? String {
                 postImage = postImage1
             }
-          //  let postImage = item["image"] as! String
             
             let postName = item["title"] as! String
             
@@ -409,47 +417,29 @@ class MyProfilePosts: BaseViewController, UICollectionViewDelegate,UICollectionV
                 postLabel1.isHidden=false
                 
                 
-            }else if i == 1{
-                
+            }else if i == 1 {
                 postImage2.sd_setImage(with: URL(string: postImage), placeholderImage: UIImage(named: "placeholder.png"))
-                
                 postLabel2.text = postName
-                
                 postImage2.isHidden=false
-                
                 postLabel2.isHidden=false
-                
-                
-                
-            }else if i == 2{
+            }else if i == 2 {
                 
                 postImage3.sd_setImage(with: URL(string: postImage), placeholderImage: UIImage(named: "placeholder.png"))
-                
                 postLabel3.text = postName
-                
                 postImage3.isHidden=false
-                
                 postLabel3.isHidden=false
                 
-            }else if i == 3{
+            }else if i == 3 {
                 
                 postImage4.sd_setImage(with: URL(string: postImage), placeholderImage: UIImage(named: "placeholder.png"))
-                
                 postLabel4.text = postName
-                
                 postImage4.isHidden=false
-                
                 postLabel4.isHidden=false
-                
             }
-            
         }
-        
-        
     }
     
-    
-    
+
     func loadDeActives(){
         
         seeMorePrevBtn.isHidden=false
@@ -458,51 +448,42 @@ class MyProfilePosts: BaseViewController, UICollectionViewDelegate,UICollectionV
             
             let item=DeActivePosts[i] as [String:Any]
             
-            let prevImage = item["image"] as! String
+            var prevImage = ""
+            if let prevImage1 = item["image"] as? String {
+                prevImage = prevImage1
+            }
             
-            let prevName = item["title"] as! String
-            
+            var prevName = ""
+            if let prevName1 = item["title"] as? String {
+                prevName = prevName1
+            }
+
             if i == 0{
                 
                 prevImage1.sd_setImage(with: URL(string: prevImage), placeholderImage: UIImage(named: "placeholder.png"))
-                
                 prevLabel1.text = prevName
-                
                 prevImage1.isHidden=false
-                
                 prevLabel1.isHidden=false
-                
                 
             }else if i == 1{
                 
                 prevImage2.sd_setImage(with: URL(string: prevImage), placeholderImage: UIImage(named: "placeholder.png"))
-                
                 prevLabel2.text = prevName
-                
                 prevImage2.isHidden=false
-                
                 prevLabel2.isHidden=false
-                
-                
-                
+
             }else if i == 2{
                 
                 prevImage3.sd_setImage(with: URL(string: prevImage), placeholderImage: UIImage(named: "placeholder.png"))
-                
                 prevLabel3.text = prevName
-                
                 prevImage3.isHidden=false
-                
                 prevLabel3.isHidden=false
                 
             }else if i == 3{
                 
                 prevImage4.sd_setImage(with: URL(string: prevImage), placeholderImage: UIImage(named: "placeholder.png"))
-                
                 prevLabel4.text = prevName
-                
                 prevImage4.isHidden=false
-                
                 prevLabel4.isHidden=false
                 
             }
@@ -572,10 +553,8 @@ class MyProfilePosts: BaseViewController, UICollectionViewDelegate,UICollectionV
                 rentLabel4.isHidden=false
                 
             }
-            
         }
-        
-        
+
     }
     
     func setRatings(){
@@ -584,74 +563,48 @@ class MyProfilePosts: BaseViewController, UICollectionViewDelegate,UICollectionV
         reviewText.text="\(stars) out of 5 Rating based on \(counts) users"
         
         if stars == "0" {
-            
-            
-            
             star1.image=UIImage(named: "starempty")
             star2.image=UIImage(named: "starempty")
             star3.image=UIImage(named: "starempty")
             star4.image=UIImage(named: "starempty")
             star5.image=UIImage(named: "starempty")
-            
-            
+
         }else if stars == "0.5" {
-            
-            
-            
             star1.image=UIImage(named: "starhalf")
             star2.image=UIImage(named: "starempty")
             star3.image=UIImage(named: "starempty")
             star4.image=UIImage(named: "starempty")
             star5.image=UIImage(named: "starempty")
-            
-            
+
         }else if stars == "1" {
-            
-            
             star1.image=UIImage(named: "star")
             star2.image=UIImage(named: "starempty")
             star3.image=UIImage(named: "starempty")
             star4.image=UIImage(named: "starempty")
             star5.image=UIImage(named: "starempty")
-            
-            
-            
-            
         }else if stars == "1.5" {
-            
-            
-            
+
             star1.image=UIImage(named: "star")
             star2.image=UIImage(named: "starhalf")
             star3.image=UIImage(named: "starempty")
             star4.image=UIImage(named: "starempty")
             star5.image=UIImage(named: "starempty")
             
-            
         }else if stars == "2" {
-            
-            
+  
             star1.image=UIImage(named: "star")
             star2.image=UIImage(named: "star")
             star3.image=UIImage(named: "starempty")
             star4.image=UIImage(named: "starempty")
             star5.image=UIImage(named: "starempty")
-            
-            
-            
-            
-            
+
         }else if stars == "2.5" {
-            
-            
-            
             star1.image=UIImage(named: "star")
             star2.image=UIImage(named: "star")
             star3.image=UIImage(named: "starhalf")
             star4.image=UIImage(named: "starempty")
             star5.image=UIImage(named: "starempty")
-            
-            
+
         }else if stars == "3" {
             
             star1.image=UIImage(named: "star")
@@ -659,10 +612,7 @@ class MyProfilePosts: BaseViewController, UICollectionViewDelegate,UICollectionV
             star3.image=UIImage(named: "star")
             star4.image=UIImage(named: "starempty")
             star5.image=UIImage(named: "starempty")
-            
-            
-            
-            
+
         }else if stars == "3.5" {
             
             star1.image=UIImage(named: "star")
@@ -670,10 +620,7 @@ class MyProfilePosts: BaseViewController, UICollectionViewDelegate,UICollectionV
             star3.image=UIImage(named: "star")
             star4.image=UIImage(named: "starhalf")
             star5.image=UIImage(named: "starempty")
-            
-            
-            
-            
+
         }else if stars == "4" {
             
             star1.image=UIImage(named: "star")
@@ -681,9 +628,7 @@ class MyProfilePosts: BaseViewController, UICollectionViewDelegate,UICollectionV
             star3.image=UIImage(named: "star")
             star4.image=UIImage(named: "star")
             star5.image=UIImage(named: "starempty")
-            
-            
-            
+
         }else if stars == "4.5" {
             
             star1.image=UIImage(named: "star")
@@ -691,9 +636,7 @@ class MyProfilePosts: BaseViewController, UICollectionViewDelegate,UICollectionV
             star3.image=UIImage(named: "star")
             star4.image=UIImage(named: "star")
             star5.image=UIImage(named: "starhalf")
-            
-            
-            
+
         }else if stars == "5" {
             
             star1.image=UIImage(named: "star")
@@ -701,40 +644,25 @@ class MyProfilePosts: BaseViewController, UICollectionViewDelegate,UICollectionV
             star3.image=UIImage(named: "star")
             star4.image=UIImage(named: "star")
             star5.image=UIImage(named: "star")
-            
-            
+
         }
-        
-        
-        
-        
-        
-        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "segueToAllReview" {
             
-            
             let destinationVC = segue.destination as! AllReviewsViewController
-            
             destinationVC.user_id=currentUserId
-            
-            
-            
-            
+
         }else if segue.identifier == "seeMore" {
             
-            
             let destinationVC = segue.destination as! SeeMoreController
-            
             destinationVC.mode = mode
-            
             destinationVC.currentUserId = currentUserId
-            
-            
         }
     }
+    
+    
     
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int{
@@ -762,38 +690,29 @@ class MyProfilePosts: BaseViewController, UICollectionViewDelegate,UICollectionV
         
     }
     
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destinationViewController.
-     // Pass the selected object to the new view controller.
-     }
-     */
-    
+    // MARK: Navigation to setting page...
     @IBAction func openSettingsFromUser(_ sender: Any) {
         let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-        
         let nextViewController = storyBoard.instantiateViewController(withIdentifier: "settingsVC") as! SettingsViewController
-        //        self.navigationController?.pushViewController(nextViewController, animated:true)
         self.present(nextViewController, animated: true, completion: nil)
     }
 
-    
+    // MARK: Navigation to see list of rentals
     @IBAction func seeMoreRentals(_ sender: Any) {
         
         mode="1"
         performSegue(withIdentifier: "seeMore", sender: self)
         
     }
+    
+    // MARK: Navigation to see list of Active gig Posts
     @IBAction func seeMoreActive(_ sender: Any) {
-        
         mode="2"
         performSegue(withIdentifier: "seeMore", sender: self)
     }
+    
+    // MARK: Navigation to see list of rentals
     @IBAction func seeMorePrev(_ sender: Any) {
-        
         mode="3"
         performSegue(withIdentifier: "seeMore", sender: self)
     }

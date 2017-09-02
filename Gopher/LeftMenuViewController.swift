@@ -64,10 +64,11 @@ public class LeftMenuViewController: UIViewController, UITableViewDelegate, UITa
             //            self.sideMenuViewController!.hideMenuViewController()
             
         case 0:
+            
             self.sideMenuViewController!.setContentViewController(UINavigationController.init(rootViewController: self.storyboard!.instantiateViewController(withIdentifier: "addCardVc")), animated: true)
             self.sideMenuViewController!.hideMenuViewController()
         case 1:
-            
+        
 //            self.sideMenuViewController!.setContentViewController(UINavigationController.init(rootViewController: self.storyboard!.instantiateViewController(withIdentifier: "editRental")), animated: true)
 //            self.sideMenuViewController!.hideMenuViewController()
             break//editRental
