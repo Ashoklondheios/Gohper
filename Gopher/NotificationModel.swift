@@ -10,6 +10,7 @@ import UIKit
 
 class NotificationModel: NSObject {
 
+    var gig_title = ""
     var order_gig_post_id = ""
     var gig_post_id = ""
     var request = ""

@@ -137,14 +137,6 @@ class RentItDetailsViewController: UIViewController, UIScrollViewDelegate {
             destinationVC.imageUrl = selectedGig.gigImage
             destinationVC.gigTitle = selectedGig.gigTitle
             
-//            let destinationVC = segue.destination as! TimeCalenderController
-//            
-//            destinationVC.selectedDatesArray = selectedGig.calenderList
-
-            
-            
-            
-            //destinationVC.datesDelegate = self
         }
     }
     

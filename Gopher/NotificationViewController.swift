@@ -415,6 +415,9 @@ class NotificationViewController: BaseViewController , UITableViewDataSource, UI
                 let gigDetails = firstObject["GigPost"] as! NSDictionary
                 let buyer = firstObject["Buyer"] as! NSDictionary
                 
+                if let title = gigDetails["title"] as? String {
+                    notificationDetail.gig_title = title
+                }
                 
                 if let calender = firstObject["OrderGigPostCalender"] as? NSArray{
                 
@@ -703,7 +706,9 @@ class NotificationViewController: BaseViewController , UITableViewDataSource, UI
 
 
             }
-            
+            if let title = gigInfo["title"] as? String {
+                gigDetails.gigTitle = title
+            }
             
             if let imageName = gigInfo["image"] as? String {
             
@@ -801,9 +806,56 @@ class NotificationViewController: BaseViewController , UITableViewDataSource, UI
             {
                 gigDetails.location_string = locationInfo["location_string"] as! String
             }
+            
+            let calenderList = firstObject["GigPostAndCalender"] as! NSArray
+            print(calenderList)
+            for i in 0..<calenderList.count {
+                let itemDict = calenderList[i] as! NSDictionary
+                let calenderModel = CalenderObject()
+                
+                if let calenderId = itemDict["gigpost_calender_id"] as? String {
+                    calenderModel.calenderId  = calenderId
+                }
+                
+                
+                if( !(itemDict["gigpost_calender_id"] is NSNull)) {
+                    let stringDate = Commons.changeGigDateFormat(dateFrom: itemDict["date"] as! String) as String
+                    
+                    calenderModel.calenderDate  = stringDate
+                }
+                gigDetails.calenderList.add(calenderModel as CalenderObject)
+                
+            }
+            
+            
+            // fetch Gig Image array....
+            let gigImageList = firstObject["GigPostAndImage"] as! NSArray
+            print(gigImageList)
+            for i in 0..<gigImageList.count {
+                let itemDict = gigImageList[i] as! NSDictionary
+                let gigImageModel = GigImageObject()
+                
+                if let gig_post_id = itemDict["gig_post_id"] as? String {
+                    gigImageModel.gig_post_id  = gig_post_id
+                }
+                
+                if let gigpost_image_id = itemDict["gigpost_image_id"] as? String {
+                    gigImageModel.gigpost_image_id  = gigpost_image_id
+                }
+                
+                
+                if let image = itemDict["image"] as? String {
+                    if image.contains("default.jpg") {
+                        gigDetails.gigImage = String (Constants.PROFILEBASEURL) + image
+                    }
+                    gigImageModel.gigpost_image_url  = String (Constants.PROFILEBASEURL) + image
+                }
+                gigDetails.gigImageList.add(gigImageModel as GigImageObject)
+            }
         
             let storyBoard : UIStoryboard = UIStoryboard(name: "Main", bundle:nil)
-            let nextViewController = storyBoard.instantiateViewController(withIdentifier: "sendContractDetailVC") as! PreviewSendContractDetailsViewController
+            let nextViewController = storyBoard.instantiateViewController(withIdentifier: "newContractDetailVC") as! NewContractDetailsViewController
+            nextViewController.titleString = gigDetails.gigTitle
             nextViewController.descriptionFromPostVC = gigDetails.gig_description
             nextViewController.categorieListFromPostVC = gigDetails.categoryList
             nextViewController.locationFromPostVC = gigDetails.location_string
@@ -816,9 +868,11 @@ class NotificationViewController: BaseViewController , UITableViewDataSource, UI
             nextViewController.longitudeFromPostVC = gigDetails.long
             nextViewController.latFromPostVC = gigDetails.lat
             nextViewController.location_stringFromPostVC = gigDetails.location_string
+            nextViewController.datesArrayCount = "\(gigDetails.calenderList.count)"
             nextViewController.paymentType = gigDetails.type_of_payment
             nextViewController.gigImage = gigDetails.gigImage
             nextViewController.fromNotificationVC = "1"
+            nextViewController.gigImageList = gigDetails.gigImageList
             self.present(nextViewController, animated:true, completion:nil)
         }
     

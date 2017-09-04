@@ -115,6 +115,7 @@
 		F7C955371F52C92A00B954E3 /* RangeSlider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C955341F52C92A00B954E3 /* RangeSlider.swift */; };
 		F7C955381F52C92A00B954E3 /* RangeSliderThumbLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C955351F52C92A00B954E3 /* RangeSliderThumbLayer.swift */; };
 		F7C955391F52C92A00B954E3 /* RangeSliderTrackLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7C955361F52C92A00B954E3 /* RangeSliderTrackLayer.swift */; };
+		F7D6CA9A1F5C7AD0007D48EA /* NewContractDetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D6CA991F5C7AD0007D48EA /* NewContractDetailsViewController.swift */; };
 		F7FB33201F585868004757B4 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7FB331F1F585868004757B4 /* BaseViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -256,6 +257,7 @@
 		F7C955341F52C92A00B954E3 /* RangeSlider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangeSlider.swift; sourceTree = "<group>"; };
 		F7C955351F52C92A00B954E3 /* RangeSliderThumbLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangeSliderThumbLayer.swift; sourceTree = "<group>"; };
 		F7C955361F52C92A00B954E3 /* RangeSliderTrackLayer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangeSliderTrackLayer.swift; sourceTree = "<group>"; };
+		F7D6CA991F5C7AD0007D48EA /* NewContractDetailsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NewContractDetailsViewController.swift; sourceTree = "<group>"; };
 		F7FB331F1F585868004757B4 /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -368,6 +370,7 @@
 				CE6823371E682C660038EABC /* LatLongDetail.swift */,
 				CE1517711E6EEC620059632F /* GigListTableViewCell.swift */,
 				CE89DF171E76729900AD82E2 /* PreviewSendContractDetailsViewController.swift */,
+				F7D6CA991F5C7AD0007D48EA /* NewContractDetailsViewController.swift */,
 			);
 			name = "Browse Screen";
 			sourceTree = "<group>";
@@ -1012,6 +1015,7 @@
 				CE89DF181E76729900AD82E2 /* PreviewSendContractDetailsViewController.swift in Sources */,
 				CE47F53B1F1F9BA800BC970C /* NotificationTableViewCellOld.swift in Sources */,
 				CEF008641F1DE6E500E12AC9 /* PublicProfilePostsController.swift in Sources */,
+				F7D6CA9A1F5C7AD0007D48EA /* NewContractDetailsViewController.swift in Sources */,
 				CE4AFD2E1F063A0400A059FC /* TimeCalenderController.swift in Sources */,
 				CEF008661F1DF03200E12AC9 /* PostsCollectionCell.swift in Sources */,
 				F7C955371F52C92A00B954E3 /* RangeSlider.swift in Sources */,
